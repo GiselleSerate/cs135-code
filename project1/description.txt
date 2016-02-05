@@ -1,0 +1,7 @@
+Really not sure if I actually need a description file or if it was just project 0 with scratch and all, so if I don't need one, please ignore this. 
+
+for addfrac: 
+Bonus features I added to the addfrac programs include reducing to 0 if the fraction sums to 0. I completed both challenge questions. I used logic things that we haven't learned yet, so I hope that's okay . . . in addfrac I used if statements instead of using the mod operation, which we have learned already. 
+
+for inventory: 
+None of this program was particularly difficult. It was basically just string formatting. 
