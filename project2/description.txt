@@ -1,6 +1,6 @@
 age: This program was fairly straightforward and easy to implement. I did not run into any challenges or issues. An additional feature I added was a distinct output to display if the dates are the same. 
 
-age_challenge1: If including this kind of failsafe, it would be smart to implement a loop of some sort that will keep asking for a date until the date is valid. The way I'd probably do this would be with a loop that calls a function repeatedly or something of the sort. The challenge as stated was not difficult to implement, though. 
+age_challenge1: If including this kind of failsafe, it would be smart to implement a loop of some sort that will keep asking for a date until the date is valid. I probably should have used a do loop with a check at the end instead of the beginning rather than needing to prime the loop like I did. 
 
 series: This program was decent. I suppose I could have named my variables more obviously. I commented my code religiously, though. 
 
