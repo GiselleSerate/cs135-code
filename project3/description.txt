@@ -1,0 +1,2 @@
+robot: The project was straightforward and simply involved basic spatial mental gymnastics. I ran into no problems. 
+robot_challenge1: This was simply a matter of changing the ++ to +=delta or whatever I called the variable and asking for a delta. No issues here. (I also deleted my original first program, so I ported robot_challenge1 back to robot with a fixed delta of 1 and stopped asking for delta, which is why robot doesn't use ++ anywhere.)

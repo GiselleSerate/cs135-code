@@ -1,6 +1,6 @@
 // Giselle Serate
 // February 16, 2016
-// Simulated robot will take in commands and update position. 
+// Simulated robot will take in commands and update position. Now also takes how many steps to move. 
 
 // HEADING KEY:
 //	      N (0)
@@ -12,7 +12,7 @@
 int main() {
 	int choice;
 	int xPos = 0, yPos = 0, heading = 1;
-	int steps = 1;
+	int steps;
 
 	for(;;) { // Infinite loop
 		// Prompt and store response
@@ -22,6 +22,8 @@ int main() {
 		switch(choice){
 
 			case 1: // Drive forward
+				printf("Please enter the number of steps: ");
+				scanf("%d", &steps);
 				switch(heading) {
 					case 0: // Headed north
 						yPos+=steps;
@@ -39,6 +41,8 @@ int main() {
 				break;
 
 			case 2: // Drive backward
+				printf("Please enter the number of steps: ");
+				scanf("%d", &steps);
 				switch(heading) {
 					case 0: // Headed north
 						yPos-=steps;
