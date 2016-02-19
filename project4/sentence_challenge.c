@@ -1,6 +1,6 @@
 // Giselle Serate
 // February 19, 2016
-// Capitalizes a sentence terminated with given sentence terminators. Prints out word count. 
+// Capitalizes a sentence terminated with given sentence terminators. Also returns word count and longest word length.
 
 #include <stdio.h>
 
@@ -19,7 +19,7 @@ int isLetter(char itsAChar) { // Will return true/false if treated as a bool
 	if(itsAChar < 123 && itsAChar > 96) { // Is lowercase
 		return 2;
 	}
-	else if(itsAChar > 91 && itsAChar < 64) { // Is uppercase
+	else if(itsAChar < 91 && itsAChar > 64) { // Is uppercase
 		return 1;
 	}
 	else {
@@ -32,6 +32,8 @@ int main() {
 	int firstTime = 1; // Keeps track of the first time through the loop
 	int numOfWords = 0;
 	int lettersInWord = 0; // How many letters are in current word
+	int maxLetters = 1; // Initialized at 1 so I can put it in the not zero if statement.
+						// Because the words will be at least 1 letter long anyway.
 
 	printf("Enter a sentence ended by a ‘.’, a ‘?’ or a ‘!’: ");
 
@@ -39,8 +41,24 @@ int main() {
 	do {
 		myChar = getchar();
 
+		if (myChar == ' ' || isTerminator(myChar)) {
+			if (lettersInWord != 0) { // if you're actually in a word
+				numOfWords++;
+				if (lettersInWord > maxLetters) {
+					printf("\nNEW MAXIMUM: %d", lettersInWord);
+					maxLetters = lettersInWord;
+				}
+			}
+			lettersInWord = 0;
+			printf("\nDone being a word.");
+		}
+		else if (isLetter(myChar)) {
+			lettersInWord++;
+			printf("\nNew letter in word: %c", myChar);		
+		}
+		// Else it's punctuation and punctuation is stupid
 		if (firstTime == 1) { //first time through loop
-			printf("\nCapitalized sentence: ");
+			printf("Capitalized sentence: ");
 			firstTime = 0;
 		}
 
@@ -51,25 +69,10 @@ int main() {
 			printf("%c", myChar);
 		}
 
-		if (myChar == ' ') {
-			if (lettersInWord != 0) { // if you're actually in a word
-				numOfWords++;
-			}
-			lettersInWord = 0;
-		}
-		else if (isLetter(myChar)) {
-			lettersInWord++;		
-		}
-		// Else it's punctuation and punctuation is stupid
-
 	} while(!isTerminator(myChar) && myChar!='\n');
 
-	// Fixing exit case, if they didn't put a space before the terminator add another word
-	if (lettersInWord != 0) {
-		numOfWords++;
-	}
-
 	printf("\nTotal number of words: %d\n", numOfWords);
+	printf("Length of the longest word: %d\n", maxLetters);
 
 	return 0;
 }
