@@ -6,12 +6,26 @@
 #include <stdio.h>
 #define LETTERS 26
 
+int letterToIndex(char ascii) { // Changes an ascii to an array index. If it's not a letter, spit out -1 as an error value.
+	int index;
+	if(ascii > 96 && ascii < 123) {
+		index = ascii - 97;
+	}
+	else if(ascii > 64 && ascii < 91) {
+		index = ascii - 65;
+	}
+	else {
+		index = -1;
+	}
+	return index; 
+}
+
 int main() {
 
 	int letterInstances[LETTERS]; // where a is 0
 	char currentChar;
 	int count;
-	char charToPush;
+	char indexToInc;
 
 	for(count = 0; count < LETTERS; count++) { // Clearing array so every value is 0 before we start. 
 		letterInstances[count] = 0;
@@ -22,8 +36,12 @@ int main() {
 	// Scans in each char. 
 	do {
 		currentChar = getchar();
-		charToPush = currentChar - 97;
-		letterInstances[charToPush]++;
+
+		indexToInc = letterToIndex(currentChar); // Get and increment array slot. What are they anyway? 
+		if(indexToInc > 0) {
+			letterInstances[indexToInc]++;
+		}
+
 	} while(currentChar != '.');
 
 	for(count = 0; count < LETTERS; count++) {
