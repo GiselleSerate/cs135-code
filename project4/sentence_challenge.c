@@ -45,16 +45,16 @@ int main() {
 			if (lettersInWord != 0) { // if you're actually in a word
 				numOfWords++;
 				if (lettersInWord > maxLetters) {
-					printf("\nNEW MAXIMUM: %d", lettersInWord);
+					// printf("\nNEW MAXIMUM: %d", lettersInWord);
 					maxLetters = lettersInWord;
 				}
 			}
 			lettersInWord = 0;
-			printf("\nDone being a word.");
+			// printf("\nDone being a word.");
 		}
 		else if (isLetter(myChar)) {
 			lettersInWord++;
-			printf("\nNew letter in word: %c", myChar);		
+			// printf("\nNew letter in word: %c", myChar);		
 		}
 		// Else it's punctuation and punctuation is stupid
 		if (firstTime == 1) { //first time through loop
