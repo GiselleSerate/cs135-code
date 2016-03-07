@@ -19,6 +19,8 @@ int main() {
 		}
 	}
 
+	printf("\nThe new matrix is:\n");
+
 	for(i = 0; i < N; i++) {
 		for(j = 0; j < N; j++) {
 			if(j+1 < N) {
@@ -31,9 +33,6 @@ int main() {
 		}
 		printf("\n");
 	}
-
-	printf("\nThe new matrix is:\n");
-
 
 	return 0;
 }
