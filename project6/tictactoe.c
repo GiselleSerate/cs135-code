@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 #define SIZE 3 // Dimension of board
-#define N SIZE * SIZE // Length of array board
+#define LENGTH SIZE * SIZE // Length of array board
 
 
 // Function prototypes
@@ -21,7 +21,7 @@ void update_table(int array[], int length, int x, int y, int whoseTurn);
 int main() {
 
 	// Make a matrix for the board
-	int board[N];
+	int board[LENGTH];
 
 	// Tracker of current player, 0 for P1, 1 for P2
 	int whoseTurn = 0;
@@ -30,37 +30,37 @@ int main() {
 	int x, y, fullTable;
 
 	// Clear matrix
-	create_clear_table(board, N);
+	create_clear_table(board, LENGTH);
 
-	fullTable = check_table_full(board, N);
+	fullTable = check_table_full(board, LENGTH);
 
 	// Prompts user with explanatory but kind of unhelpful text.
 	printf("This program plays the game of tic-tac-toe");
 
-	while( !check_three_in_a_row(board, N, whoseTurn) && !fullTable ) { // Not three in a row, not full
+	while( !check_three_in_a_row(board, LENGTH, whoseTurn) && !fullTable ) { // Not three in a row, not full
 		// Display table
-		display_table(board, N);
+		display_table(board, LENGTH);
 
 		// Ask appropriate user for x and y coordinates
 		printf("Enter the section of %c for Player %d [row,col]:", (whoseTurn == 0)?'O':'X', (whoseTurn == 0)?1:2);
 		scanf("%d,%d", &x, &y);
-		while(check_legal_option(board, N, x, y)) { // Ask user while they have not inputted a legal option
+		while(check_legal_option(board, LENGTH, x, y)) { // Ask user while they have not inputted a legal option
 			printf("Invalid selection\nEnter the section of %c for Player %d [row,col]: ", (whoseTurn == 0)?'O':'X', (whoseTurn == 0)?1:2);
 			scanf("%d,%d", &x, &y);
 		}
 
-		update_table(board, N, x, y, whoseTurn);
+		update_table(board, LENGTH, x, y, whoseTurn);
 
 		// Change whoseTurn
 		whoseTurn = !whoseTurn;
 
 		// Check again for looping back; just so I don't have to do an extra function call for the win/lose/tie case at the end
-		fullTable = check_table_full(board, N);
+		fullTable = check_table_full(board, LENGTH);
 
 	}
 
 	// Win case or lose case or tie case
-	display_table(board, N);
+	display_table(board, LENGTH);
 	if(fullTable) { // Tie case
 		printf("Game over, no player wins.\n");
 	}
@@ -76,11 +76,9 @@ int main() {
 
 // Takes in an array and its length and sets the entire table to blank (aka -1)
 void create_clear_table(int array[], int length) {
-	// printf("Size is %d and N is %d", SIZE, N); // DEBUG LINE
 	int *arrayPtr = array;
-	for(arrayPtr; arrayPtr < array + N; arrayPtr++) {
+	for(arrayPtr; arrayPtr < array + LENGTH; arrayPtr++) {
 		*arrayPtr = -1;
-		// printf("%d ", *arrayPtr); // DEBUG LINE
 	}
 }
 
@@ -107,12 +105,10 @@ int check_three_in_a_row(int array[], int length, int whoseTurn) { // I really o
 		array[0] == whoseTurn && array[3] == whoseTurn && array[6] == whoseTurn|| // 6
 		array[2] == whoseTurn && array[5] == whoseTurn && array[8] == whoseTurn) { // 7
 
-		// printf("The winner is: %d", whoseTurn + 1); // DEBUG LINE
 		return whoseTurn + 1; // Returns who actually won (1 for Player 1, 2 for player 2)
 
 	}
 	else { // I mean, there's not really a point with the else, if caught by the if the function returns and doesn't get here
-		// printf("There isn't a winner yet\n"); // DEBUG LINE
 		return 0;
 	}
 }
@@ -148,18 +144,14 @@ void display_table(int array[], int length) {
 int check_legal_option(int array[], int length, int x, int y) { // Note that x and y are the userdefined x and y
 	int *arrayPtr = array;
 	arrayPtr = array + SIZE*(y-1) + x - 1; // Move arrayPtr so it's pointing at the right spot. 
-	// printf("x,y,*arrayPtr,array[coords]: %d, %d, %d, %d\n", x, y, *arrayPtr, array[3*(y-1)+x-1]); // DEBUG LINE
 	if(x > 3 || x < 1 || y > 3 || y < 1) {
-		// printf("LEGAL ERROR: Out of range\n"); // DEBUG LINE
 		return 1;
 	}
 	// else if(*arrayPtr != -1) {
 	else if(*arrayPtr != -1) {
-		// printf("LEGAL ERROR: Space not blank\n"); // DEBUG LINE
 		return 1;
 	}
 	else {
-		// printf("LEGAL ACTION: This is okay\n"); // DEBUG LINE
 		return 0;
 	}
 }
@@ -169,5 +161,4 @@ void update_table(int array[], int length, int x, int y, int whoseTurn) { // Not
 	int *arrayPtr = array;
 	arrayPtr = arrayPtr + SIZE*(y-1) + x - 1; // Move arrayPtr so it's pointing at the right spot. 
 	*arrayPtr = whoseTurn;
-	// printf("\nwhoseTurn:%d and x: %d and y: %d\n", whoseTurn, x, y); // DEBUG LINE
 }
