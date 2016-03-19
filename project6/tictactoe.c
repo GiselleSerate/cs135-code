@@ -89,24 +89,28 @@ int check_three_in_a_row(int array[], int length) {
 // Print out the table.
 void display_table(int array[], int length) {
 	int *arrayPtr = array;
+	printf("\nThe current state of the game is:\n\nColumn:1   2   3\nRow:  ___ ___ ___\n     |   |   |   |\n  1  "); // Print header and top of first row
 	for(arrayPtr; arrayPtr < array + length; arrayPtr++) {
-		if((arrayPtr - (array + length)) % 3 == 2) { // if this is the end of the row
+		if((arrayPtr - (array + length)) % SIZE == 0 && !(arrayPtr - array == 0)) { // If this is the end of the row and not the first time, print bottom of this row and the top of the next one
 			printf("|\n");
+			printf("     |___|___|___|\n     |   |   |   |\n  %ld  ", (arrayPtr - array)/SIZE + 1);
 		}
 
 		printf("|");
 
 		if(*arrayPtr == -1) {
-			printf("\t");
+			printf("   ");
 		}
 		else if(*arrayPtr == 0) {
-			printf(" O\t");
+			printf(" O ");
 		}
 		else {
-			printf(" X\t");
+			printf(" X ");
 		}
 
 	}
+	printf("|\n");
+	printf("     |___|___|___|\n\n"); // Print bottom of last row
 }
 
 // Checks if a given move is legal with the board as is. Returns 0 if illegal, 1 if legal. 
