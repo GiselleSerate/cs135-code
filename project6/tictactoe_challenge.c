@@ -1,6 +1,6 @@
 // Giselle Serate
-// March 18, 2016
-// Project 6: tic tac toe
+// March 19, 2016
+// Project 6: tic tac toe CHALLENGE
 // P1 is 0 and O and P2 is 1 and X; blank is -1
 
 #include <stdio.h>
@@ -24,51 +24,64 @@ int main() {
 	int board[LENGTH];
 
 	// Tracker of current player, 0 for P1, 1 for P2
-	int whoseTurn = 0;
+	int whoseTurn;
 
 	// Stores user's last inputted x and y, variable to store output of check_table_full
 	int x, y, fullTable;
 
-	// Clear matrix
-	create_clear_table(board, LENGTH);
-
-	fullTable = check_table_full(board, LENGTH);
+	// User input of whether they want to play again or not. 
+	char again;
 
 	// Prompts user with explanatory but kind of unhelpful text.
 	printf("This program plays the game of tic-tac-toe");
 
-	while( !check_three_in_a_row(board, LENGTH, whoseTurn) && !fullTable ) { // Not three in a row, not full
-		// Display table
-		display_table(board, LENGTH);
 
-		// Ask appropriate user for x and y coordinates
-		printf("Enter the section of %c for Player %d [row,col]:", (whoseTurn == 0)?'O':'X', (whoseTurn == 0)?1:2);
-		scanf("%d,%d", &x, &y);
-		while(check_legal_option(board, LENGTH, x, y)) { // Ask user while they have not inputted a legal option
-			printf("Invalid selection\nEnter the section of %c for Player %d [row,col]: ", (whoseTurn == 0)?'O':'X', (whoseTurn == 0)?1:2);
-			scanf("%d,%d", &x, &y);
-		}
+	for(;;) {
+		whoseTurn = 0;
 
-		update_table(board, LENGTH, x, y, whoseTurn);
+		// Clear matrix
+		create_clear_table(board, LENGTH);
 
-		// Change whoseTurn
-		whoseTurn = !whoseTurn;
-
-		// Check again for looping back; just so I don't have to do an extra function call for the win/lose/tie case at the end
 		fullTable = check_table_full(board, LENGTH);
 
-	}
+		while( !check_three_in_a_row(board, LENGTH, whoseTurn) && !fullTable ) { // Not three in a row, not full
+			// Display table
+			display_table(board, LENGTH);
 
-	// Win case or lose case or tie case
-	display_table(board, LENGTH);
-	if(fullTable) { // Tie case
-		printf("Game over, no player wins.\n");
-	}
-	else { // Win case
-		printf("Congratulations, Player %d wins! \n", whoseTurn + 1);
-	}
+			// Ask appropriate user for x and y coordinates
+			printf("Enter the section of %c for Player %d [row,col]:", (whoseTurn == 0)?'O':'X', (whoseTurn == 0)?1:2);
+			scanf("%d,%d", &x, &y);
+			while(check_legal_option(board, LENGTH, x, y)) { // Ask user while they have not inputted a legal option
+				printf("Invalid selection\nEnter the section of %c for Player %d [row,col]: ", (whoseTurn == 0)?'O':'X', (whoseTurn == 0)?1:2);
+				scanf("%d,%d", &x, &y);
+			}
 
-	return 0;
+			update_table(board, LENGTH, x, y, whoseTurn);
+
+			// Change whoseTurn
+			whoseTurn = !whoseTurn;
+
+			// Check again for looping back; just so I don't have to do an extra function call for the win/lose/tie case at the end
+			fullTable = check_table_full(board, LENGTH);
+
+		}
+
+		// Win case or lose case or tie case
+		display_table(board, LENGTH);
+		if(fullTable) { // Tie case
+			printf("Game over, no player wins.\n");
+		}
+		else { // Win case
+			printf("Congratulations, Player %d wins! \n", whoseTurn + 1);
+		}
+
+		printf("Would you like to play again?\n"); 
+		scanf("%c", &again);
+
+		if(again == 'n' || again == 'N') { // Will by default play again; this catches all plausible variations of "no", including "nah", "neh", "nahhhh" etc.
+			return 0;
+		}
+	}
 }
 
 
