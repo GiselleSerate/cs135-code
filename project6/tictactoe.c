@@ -15,7 +15,7 @@ int check_table_full(int array[], int length);
 int check_three_in_a_row(int array[], int length);
 void display_table(int array[], int length);
 int check_legal_option(int array[], int length, int x, int y);
-void update_table(int array[], int length, int x, int y);
+void update_table(int array[], int length, int x, int y, int whoseTurn);
 
 
 int main() {
@@ -34,17 +34,22 @@ int main() {
 
 	fullTable = check_table_full(board, N);
 
+	// Prompts user with explanatory but kind of unhelpful text.
+	printf("This program plays the game of tic-tac-toe");
+
 	while( !check_three_in_a_row(board, N) || !fullTable ) { // Not three in a row, not full
 		// Display table
 		display_table(board, N);
 
-		// Ask user for x and y coordinates
-		printf("ENTER THE THINGY");
+		// Ask appropriate user for x and y coordinates
+		printf("Enter the section of %c for Player %d [row,col]:", (whoseTurn == 0)?'O':'X', (whoseTurn == 0)?1:2);
 		scanf("%d,%d", &x, &y);
-		while(check_legal_option(board, N, x-1, y-1)) { // Ask user while they have not inputted a legal option
-			printf("ENTER THE THINGY");
+		while(check_legal_option(board, N, x, y)) { // Ask user while they have not inputted a legal option
+			printf("Invalid selection\nEnter the section of %c for Player %d [row,col]:", (whoseTurn == 0)?'O':'X', (whoseTurn == 0)?1:2);
 			scanf("%d,%d", &x, &y);
 		}
+
+		update_table(board, N, x, y, whoseTurn);
 
 		// Change whoseTurn
 		whoseTurn = !whoseTurn;
@@ -64,9 +69,11 @@ int main() {
 
 // Takes in an array and its length and sets the entire table to blank (aka -1)
 void create_clear_table(int array[], int length) {
+	// printf("Size is %d and N is %d", SIZE, N); // DEBUG LINE
 	int *arrayPtr = array;
-	for(arrayPtr; arrayPtr < array + length; arrayPtr++) {
+	for(arrayPtr; arrayPtr < array + N; arrayPtr++) {
 		*arrayPtr = -1;
+		// printf("%d ", *arrayPtr); // DEBUG LINE
 	}
 }
 
@@ -99,7 +106,7 @@ void display_table(int array[], int length) {
 		printf("|");
 
 		if(*arrayPtr == -1) {
-			printf("   ");
+			printf(" b ");
 		}
 		else if(*arrayPtr == 0) {
 			printf(" O ");
@@ -114,15 +121,27 @@ void display_table(int array[], int length) {
 }
 
 // Checks if a given move is legal with the board as is. Returns 0 if illegal, 1 if legal. 
-int check_legal_option(int array[], int length, int x, int y) {
+int check_legal_option(int array[], int length, int x, int y) { // Note that x and y are the userdefined x and y
 	int *arrayPtr = array;
-	arrayPtr = arrayPtr + N*y + x; // Move arrayPtr so it's pointing at the right spot. 
-	if(*arrayPtr == -1) {
+	arrayPtr = arrayPtr + N*(y-1) + x - 1; // Move arrayPtr so it's pointing at the right spot. 
+	if(x > 3 || x < 1 || y > 3 || y < 1) {
+		printf("LEGAL ERROR: Out of range (%d, %d)\n", x, y); // DEBUG LINE
+		return 1;
+	}
+	else if(*arrayPtr != -1) {
+		printf("LEGAL ERROR: Space not blank (%d, %d, %d)\n", x, y, *arrayPtr); // DEBUG LINE
 		return 1;
 	}
 	else {
+		printf("LEGAL ACTION: This is okay (%d, %d)\n", x, y); // DEBUG LINE
 		return 0;
 	}
 }
 
-void update_table(int array[], int length, int x, int y);
+// Changes values in actual array according to what the latest x and y are, does not return anything
+void update_table(int array[], int length, int x, int y, int whoseTurn) { // Note that x and y are userdefined x and y
+	int *arrayPtr = array;
+	arrayPtr = arrayPtr + N*(y-1) + x - 1; // Move arrayPtr so it's pointing at the right spot. 
+	*arrayPtr = whoseTurn;
+	// printf("\nwhoseTurn is:%d and x: %d and y: %d\n", whoseTurn, x, y); // DEBUG LINE
+}
