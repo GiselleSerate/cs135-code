@@ -21,7 +21,7 @@ void update_table(int array[], int length, int x, int y, int whoseTurn);
 int main() {
 
 	// Make a matrix for the board
-	int board[SIZE];
+	int board[N];
 
 	// Tracker of current player, 0 for P1, 1 for P2
 	int whoseTurn = 0;
@@ -123,17 +123,19 @@ void display_table(int array[], int length) {
 // Checks if a given move is legal with the board as is. Returns 0 if illegal, 1 if legal. 
 int check_legal_option(int array[], int length, int x, int y) { // Note that x and y are the userdefined x and y
 	int *arrayPtr = array;
-	arrayPtr = arrayPtr + N*(y-1) + x - 1; // Move arrayPtr so it's pointing at the right spot. 
+	arrayPtr = array + SIZE*(y-1) + x - 1; // Move arrayPtr so it's pointing at the right spot. 
+	// printf("x,y,*arrayPtr,array[coords]: %d, %d, %d, %d\n", x, y, *arrayPtr, array[3*(y-1)+x-1]); // DEBUG LINE
 	if(x > 3 || x < 1 || y > 3 || y < 1) {
-		printf("LEGAL ERROR: Out of range (%d, %d)\n", x, y); // DEBUG LINE
+		// printf("LEGAL ERROR: Out of range\n"); // DEBUG LINE
 		return 1;
 	}
+	// else if(*arrayPtr != -1) {
 	else if(*arrayPtr != -1) {
-		printf("LEGAL ERROR: Space not blank (%d, %d, %d)\n", x, y, *arrayPtr); // DEBUG LINE
+		// printf("LEGAL ERROR: Space not blank\n"); // DEBUG LINE
 		return 1;
 	}
 	else {
-		printf("LEGAL ACTION: This is okay (%d, %d)\n", x, y); // DEBUG LINE
+		// printf("LEGAL ACTION: This is okay\n"); // DEBUG LINE
 		return 0;
 	}
 }
@@ -141,7 +143,7 @@ int check_legal_option(int array[], int length, int x, int y) { // Note that x a
 // Changes values in actual array according to what the latest x and y are, does not return anything
 void update_table(int array[], int length, int x, int y, int whoseTurn) { // Note that x and y are userdefined x and y
 	int *arrayPtr = array;
-	arrayPtr = arrayPtr + N*(y-1) + x - 1; // Move arrayPtr so it's pointing at the right spot. 
+	arrayPtr = arrayPtr + SIZE*(y-1) + x - 1; // Move arrayPtr so it's pointing at the right spot. 
 	*arrayPtr = whoseTurn;
-	// printf("\nwhoseTurn is:%d and x: %d and y: %d\n", whoseTurn, x, y); // DEBUG LINE
+	// printf("\nwhoseTurn:%d and x: %d and y: %d\n", whoseTurn, x, y); // DEBUG LINE
 }
