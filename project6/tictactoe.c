@@ -43,10 +43,10 @@ int main() {
 
 		// Ask appropriate user for x and y coordinates
 		printf("Enter the section of %c for Player %d [row,col]:", (whoseTurn == 0)?'O':'X', (whoseTurn == 0)?1:2);
-		scanf("%d,%d", &x, &y);
+		scanf("%d,%d", &y, &x);
 		while(check_legal_option(board, LENGTH, x, y)) { // Ask user while they have not inputted a legal option
 			printf("Invalid selection\nEnter the section of %c for Player %d [row,col]: ", (whoseTurn == 0)?'O':'X', (whoseTurn == 0)?1:2);
-			scanf("%d,%d", &x, &y);
+			scanf("%d,%d", &y, &x);
 		}
 
 		update_table(board, LENGTH, x, y, whoseTurn);
