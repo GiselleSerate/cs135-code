@@ -25,28 +25,22 @@ int main(int argc, char* argv[]) {
 
 	// for i = 0 to size of planets array - 1 
 	for(i = 0; i < howManyPlanets; i++) {
-		printf("NEW I LOOP, i = %d\n", i); // DEBUG LINE
 
 		// for j = size of planets array - 1 down to i + 1 
 		for(j = howManyPlanets - 1; j > i; j--) {
-			printf("Into j loop, j = %d\n", j); // DEBUG LINE
 
 			// if planets[j] is BEFORE planets[j -1] alphabetically or the same, the following happens (switch even if the same bc it doesn't matter)
 			if(string_compare(planets[j-1], planets[j])) {
-				printf("We strcmpd and was true.\n");
 				// then exchange planets[j] with planets[j-1] for FORWARD ALPHABETIZATION
-				// if(argv[2] == "a") {
-				if(1) {
-					printf("j is %s and j - 1 is %s\n", planets[j], planets[j-1]); // DEBUG LINE
+				if(string_compare(argv[2], "a") == -1) {
 					*holdMyCoke = planets[j]; // doopy a
 					planets[j] = planets[j-1];
 					planets[j-1] = *holdMyCoke;
 				}
 			}
 			else { // This means it's after alphabetically
-				printf("We strcmpd and was false.\n");
 				// then exchange planets[j] with planets[j-1] for REVERSE ALPHABETIZATION
-				if(0) {
+				if(string_compare(argv[2], "r") == -1) {
 					*holdMyCoke = planets[j];
 					planets[j] = planets[j-1];
 					planets[j-1] = *holdMyCoke;
@@ -57,7 +51,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	// PRINTY PRINTY
-	if(argv[2] == "r") {
+	if(string_compare(argv[2], "r") == -1) {
 		printf("The planets in reverse alphabetical order are: ");
 	}
 	else { // Else assumes forward alphabetization
@@ -70,24 +64,21 @@ int main(int argc, char* argv[]) {
 	printf("%s\n", planets[i]);
 
 	return 0;
-};
+}
 
 // I made up my own return values because the instructions were not helpful.
 // If str1 comes first, returns 0 (FALSE), if str2 comes first, returns 1 (TRUE), if neither, returns -1 (TRUE)
 int string_compare(char* str1, char* str2) {
 	while(*str1 != '\0' && *str2 != '\0') {
 		if(*str1 < *str2) {
-			printf("Boutta return 0\n"); // DEBUG LINE
 			return 0;
 		}
 		else if (*str1 > *str2) {
-			printf("Boutta return 1\n"); // DEBUG LINE
 			return 1;
 		}
 		str1++;
 		str2++;
 	}
 	// At this point both strings have ended without a difference.
-	printf("Boutta return -1\n"); // DEBUG LINE
 	return -1;
 }
