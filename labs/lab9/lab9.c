@@ -33,9 +33,9 @@ void remove_filename(char* url) {
 
 	// Now we go backwards in search of the slash.
 	while(*url != '/') {
-		*url = '\0'; // it's a null now
+		*url = '\0'; // it's a null now // I don't actually need to do this because the null TERMINATES the string. 
 		url--; // go backward
-	};
+	}
 
 	*url = '\0'; // Get rid of that slash.
 }
