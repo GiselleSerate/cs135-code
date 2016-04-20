@@ -44,16 +44,16 @@ int main() {
 		// scanf an int, if it's an int then start reading as coordinates
 		// else if it's a char then I dunno you can store it as option I guess
 		scanf("%c", &x);
-		if(x >= '1' && x <='4') { // ● a legal move 
+		if(x >= '0' && x <='9') { // ● a legal move 
 			x = atoi((const char *) &x); // there are better ways than atoi like subtracting value of ascii but w/e
 			scanf(", %d", &y);
 			x--;
 			y--;
 			// X AND Y ARE NOW 0-INDEXED
-			while(!make_move(board, WIDTH, HEIGHT, y, x, currentPlayer)) {
-				printf("That isn't a valid move. Try again.");
-				continue; // <<<<<<<<<<<<<< not sure how my logic works out
-				// because I didn't write the rest of this but I want it to go do the ask again without changing current player
+			if(!make_move(board, WIDTH, HEIGHT, y, x, currentPlayer)) {
+				printf("That isn't a valid move. Try again.\n\n");
+				while((getchar())!='\n'); // Clears input buffer
+				continue; // this takes you into the else case with the switch actually
 			}
 
 			// Here's your win check.
@@ -83,8 +83,11 @@ int main() {
 				case 'p': // ● p: print the state of the board as an image (see below for more info)
 					display_image(board, WIDTH, HEIGHT);
 					break;
+				case '1': // invalid move
+					break;
 				default:
-					printf("I don't know how to do that.\n");
+					printf("%d I don't know how to do that.\n", (int)option);
+					break;
 			}
 		}
 		while((getchar())!='\n'); // Clears input buffer.
@@ -104,7 +107,7 @@ int check_four_in_a_row(int board[WIDTH][HEIGHT], int width, int height) {
 		// Check verticals
 		for(i = 0; i < WIDTH; i++) {
 			if(board[i][0] == whoseTurn && board[i][1] == whoseTurn && board[i][2] == whoseTurn && board[i][3] == whoseTurn) {
-				printf("OOOH BABY A VERTICAL\n");
+				// printf("OOOH BABY A VERTICAL\n");
 				return whoseTurn;
 			}
 		}
@@ -112,21 +115,21 @@ int check_four_in_a_row(int board[WIDTH][HEIGHT], int width, int height) {
 		// Check horizontals
 		for(j = 0; j < HEIGHT; j++) {
 			if(board[0][j] == whoseTurn && board[1][j] == whoseTurn && board[2][j] == whoseTurn && board[3][j] == whoseTurn) {
-				printf("OOOH BABY A HORIZONTAL\n");
+				// printf("OOOH BABY A HORIZONTAL\n");
 				return whoseTurn;
 			}
 		}
 
 		// Check positive slope diagonal
 		if(board[0][3] == whoseTurn && board[1][2] == whoseTurn && board[2][1] == whoseTurn && board[3][0] == whoseTurn) {
-			printf("OOOH BABY A POS SLOPE DIAG\n");
+			// printf("OOOH BABY A POS SLOPE DIAG\n");
 			return whoseTurn;
 		}
 
 		// Check negative slope diagonal
 		// Check positive slope diagonal
 		if(board[0][0] == whoseTurn && board[1][1] == whoseTurn && board[2][2] == whoseTurn && board[3][3] == whoseTurn) {
-			printf("OOOH BABY A NEG SLOPE DIAG\n");
+			// printf("OOOH BABY A NEG SLOPE DIAG\n");
 			return whoseTurn;
 		}
 	}
@@ -183,7 +186,7 @@ void display_ascii(int board[WIDTH][HEIGHT], int width, int height) {
 				printf("|   ");
 			}
 			else {
-				printf("| %d ", board[i][j]);
+				printf("| %c ", board[i][j]-1?'O':'X');
 			}
 		}
 		printf("|\n");
@@ -245,7 +248,7 @@ int make_move(int board[WIDTH][HEIGHT], int width, int height, int x, int y, int
 		return 1;
 	}
 	else {
-		printf("that isn't a valid move you suck \n");
+		// Not a valid move.
 		return 0;
 	}
 }
@@ -253,7 +256,7 @@ int make_move(int board[WIDTH][HEIGHT], int width, int height, int x, int y, int
 // Takes in array and also move coordinates to see if the square is empty. Also within bounds.
 // Returns 0 for not valid move and 1 for valid move.
 int is_valid(int board[WIDTH][HEIGHT], int width, int height, int x, int y) {
-	if(x < width && x >= 0 && y < height && y >= 0) {
+	if(x < width && x >= 0 && y < height && y >= 0 && board[x][y] == 0) {
 		return 1;
 	}
 	return 0;
