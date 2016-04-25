@@ -31,15 +31,18 @@ int main() {
 	char x = 0;
 	int y = 0;
 	char option = 'a';
-	int currentPlayer = 0;
+	int currentPlayer = 0; // switches between 0 and 1
 	int board[WIDTH][HEIGHT];
 	int winCheck; // stores return of win checker
 	clear_table(board, WIDTH, HEIGHT);
 
+	printf("This program plays the game of tic-tac-toe\n");
+
 	while(1) {
 		// ASKYYY
-		printf("It is Player %s's turn. Please type in one of the following:\n", currentPlayer?"O":"X");
-		printf("\"x, y\": makes move in square x, y\n\"c\": clears board\n\"s\": displays ASCII board\n\"p\": displays PGM board\n\n");
+		// printf("It is Player %s's turn. Please type in one of the following:\n", currentPlayer?"O":"X");
+		// printf("\"x, y\": makes move in square x, y\n\"c\": clears board\n\"s\": displays ASCII board\n\"p\": displays PGM board\n\n");
+		printf("Enter a command for Player %d ([row,col], c, s, p):", currentPlayer + 1);
 
 		// scanf an int, if it's an int then start reading as coordinates
 		// else if it's a char then I dunno you can store it as option I guess
@@ -51,7 +54,7 @@ int main() {
 			y--;
 			// X AND Y ARE NOW 0-INDEXED
 			if(!make_move(board, WIDTH, HEIGHT, y, x, currentPlayer)) {
-				printf("That isn't a valid move. Try again.\n\n");
+				printf("Invalid selection\n\n");
 				while((getchar())!='\n'); // Clears input buffer
 				continue; // this takes you into the else case with the switch actually
 			}
@@ -60,15 +63,17 @@ int main() {
 			winCheck = check_four_in_a_row(board, WIDTH, HEIGHT); // store for analysis
 			if(winCheck) {
 				if(winCheck == -1) { // Full board
-					printf("You're tied and the board is full!\n");
+					printf("Game over, no player wins.\n");
+					exit(0);
 				}
 				else { // A player wins, wincheck is 1 or 2
-					printf("Player %d wins!\n", winCheck);
+					printf("Congratulations, Player %d wins!\n", winCheck);
+					exit(0);
 				}
 			}
 			// else keep playing because the board's not full and nobody won
 
-			printf("Changing currentPlayer\n");
+			// printf("Changing currentPlayer\n");
 			currentPlayer = !currentPlayer;
 		}
 		else {
@@ -76,6 +81,7 @@ int main() {
 			switch(option) {
 				case 'c': // ● c: clear the board
 					clear_table(board, WIDTH, HEIGHT);
+					currentPlayer = 0;
 					break;
 				case 's': // ● s: print the state of the board as displayed in Figure 1 
 					display_ascii(board, WIDTH, HEIGHT);
@@ -86,7 +92,7 @@ int main() {
 				case '1': // invalid move
 					break;
 				default:
-					printf("%d I don't know how to do that.\n", (int)option);
+					printf("Not a menu item\n");
 					break;
 			}
 		}
@@ -156,31 +162,35 @@ void clear_table(int board[WIDTH][HEIGHT], int width, int height) {
 			board[i][j] = 0;
 		}
 	}
-	printf("The board has been cleared.\n\n");
+	// printf("The board has been cleared.\n\n");
 }
 
 // Takes in array
 // Prints board as ascii characters. Does not return anything.
 // Should look like:
-// _____________ 4*WIDTH+1 underscores
-// |sss|sss|sss| 1 pipe, 3 space (repeat until end line) 1 pipe, 1 \n
-// |sXs|sOs|s s| 1 pipe, 1 space, SYMBOL, 1 space (repeat until end line) 1 pipe, 1 \n
-// |___|___|___| 1 pipe, 3 underscore (repeat until end line) 1 pipe, 1 \n
+// Column:1            3 sp betw numbers
+// Row:  _____________ 2 space, 4*WIDTH+1 underscores
+//       |sss|sss|sss| 1 pipe, 3 space (repeat until end line) 1 pipe, 1 \n
+//       |sXs|sOs|s s| 1 pipe, 1 space, SYMBOL, 1 space (repeat until end line) 1 pipe, 1 \n
+//       |___|___|___| 1 pipe, 3 underscore (repeat until end line) 1 pipe, 1 \n
 void display_ascii(int board[WIDTH][HEIGHT], int width, int height) {
 	int i, j, a; // indexing baby; a is my personal counter. Please no touchy.
 
-	printf("This is the current game state:\n");
+	printf("The current state of the game is:\n");
 
-	for(a = 0; a < 4 * WIDTH + 1; a++) { 
-		printf("_");
-	}
-	printf("\n");
+	printf("Column:1   2   3   4\n");
+
+	// printf("      "); // I'm lazy. This is six spaces.
+
+	printf("Row:   ___ ___ ___ ___\n");
 
 	for(i = 0; i < width; i++) {
+		printf("      "); // I'm lazy. This is six spaces.
 		for(a = 0; a < height; a++) {
 			printf("|   ");
 		}
 		printf("|\n");
+		printf("%d     ", i+1); // I'm lazy. This is six spaces and the index.
 		for(j = 0; j < height; j++) {
 			if(board[i][j] == 0) {
 				printf("|   ");
@@ -190,6 +200,7 @@ void display_ascii(int board[WIDTH][HEIGHT], int width, int height) {
 			}
 		}
 		printf("|\n");
+		printf("      "); // I'm lazy. This is six spaces.
 		for(a = 0; a < height; a++) {
 			printf("|___");
 		}
@@ -205,7 +216,7 @@ void display_ascii(int board[WIDTH][HEIGHT], int width, int height) {
 void display_image(int board[WIDTH][HEIGHT], int width, int height) {
 	int i, j, a, b; // Save a and b for me. Don't touch it.
 
-	printf("This is the current game state:");
+	printf("The current state of the game is:");
 
 	// image header
 	printf("P2\n# image.pgm\n23 23\n255\n"); 
