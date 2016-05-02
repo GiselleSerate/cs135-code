@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 	int szX, szY; // size of image
 	int i, j; // counters, beautiful counters
 	int testMe;
-	unsigned char **imgArray;
+	int *imgArray;
 
 	// check command line argument number
 	if(argc != 3) {
@@ -53,16 +53,15 @@ int main(int argc, char *argv[]) {
 		ichar = fgetc(image);
 	} while(ichar != '\n');
 	// Malloc array
-	imgArray = (int**)malloc(sizeof(int) * (szX * szY));
+	imgArray = (int *)malloc(sizeof(int) * (szX * szY));
 	// Continue reading in array
-	for(i = 0; i < szX; i++) {
-		for(j = 0; j < szY; j++) {
-			// fscanf(image, " %d", &testMe);
-			// printf("%d ", testMe);
-			fscanf(image, " %c", imgArray[i][j]);
-			printf("%d ", imgArray[i][j]); // DEBUG LINE
-		}
-		printf("\n"); // DEBUG LINE
+	for(i = 0; i < szX * szY; i++) {
+		// fscanf(image, " %d", &testMe);
+		// printf("%d ", testMe);
+		fscanf(image, " %d", &testMe);
+		printf("testMe is %d\n", testMe);
+		// *(imgArray+i) = (unsigned char)testMe; // HERE BE PROBLEMS
+		printf("%c ", imgArray[i]); // DEBUG LINE
 	}
 
 	// start reading message I NEED THAT SIZE
