@@ -70,11 +70,11 @@ int main(int argc, char *argv[]) {
 		for(j = 0; j < 8; j++) {
 			if(mchar & 1 << j) { // if bit j of mchar set, then
 				// set bit 0 of image pixel k
-				imgArray[i] |= 1 << k;
+				imgArray[k] |= 1 << 0;
 			}
 			else {
 				// clear bit 0 of image pixel k
-				imgArray[i] &= ~(1 << k);
+				imgArray[k] &= ~(1 << 0);
 			}
 			// increment k
 			k++;
@@ -89,11 +89,11 @@ int main(int argc, char *argv[]) {
 	}
 	fprintf(encoded, "P2\n# result.pgm\n%d %d\n255\n", szX, szY); // pgm header
 	for(i = 0; i < szX * szY; i++) {
-		fprintf(encoded, "%d ", imgArray[i]);
-		// printf("%d ", imgArray[i]); // DEBUG LINE
+		// fprintf(encoded, "%d ", imgArray[i]);
+		printf("%d ", imgArray[i]); // DEBUG LINE
 		if(i%szX == szX-1) { // last element in a row
-			fprintf(encoded, "\n");
-			// printf("\n"); // DEBUG LINE
+			// fprintf(encoded, "\n");
+			printf("\n"); // DEBUG LINE
 		}
 	}
 
