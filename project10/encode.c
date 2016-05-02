@@ -56,12 +56,7 @@ int main(int argc, char *argv[]) {
 	imgArray = (int *)malloc(sizeof(int) * (szX * szY));
 	// Continue reading in array
 	for(i = 0; i < szX * szY; i++) {
-		// fscanf(image, " %d", &testMe);
-		// printf("%d ", testMe);
-		fscanf(image, " %d", &testMe);
-		printf("testMe is %d\n", testMe);
-		// *(imgArray+i) = (unsigned char)testMe; // HERE BE PROBLEMS
-		printf("%c ", imgArray[i]); // DEBUG LINE
+		fscanf(image, " %d", &imgArray[i]);
 	}
 
 	// start reading message I NEED THAT SIZE
