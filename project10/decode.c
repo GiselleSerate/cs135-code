@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 	char ichar, mchar;
 	int szX, szY; // size of image
 	int *imgArray;
-	unsigned char currentChar; // add stuff to this puppy bit by bit
+	unsigned char currentChar = 0; // add stuff to this puppy bit by bit
 	int i, j, p;
 	int screen = 1; // IN PRACTICE WILL START OUT AS 0 BUT I WANT IT TO PRINT TO SCREEN
 
@@ -64,7 +64,8 @@ int main(int argc, char *argv[]) {
 		// if(i < 100) printf("%d ", imgArray[i]);
 	}
 
-	int wE, power, q;
+	int wE, power;
+	currentChar = 0;
 	// start reading from encoded thing
 	for(i = 0; i < szX * szY; i++) {
 		// Pull 8 lsbs. We want mod 8
@@ -72,15 +73,23 @@ int main(int argc, char *argv[]) {
 		if(imgArray[i] & 1 << 0) {
 			// if it's set, bit i % 8 of currentChar is 1
 			power = 1;
-			for(p = 0; p < (7-(i % 8)); p++) { // raises to power 7 - p
+			for(p = 0; p < (i % 8); p++) { // raises to power i % 8
 				power *= 2;
 			}
-			currentChar += power;
+			wE += power;
+			// printf("1");
 		}
 		// else bit i % 8 of currentChar be 0
+		else {
+			// fprintf(output, "0");
+			// printf("0");
+		}
 		if((i % 8) == 7) {
 			// you at the end now, write this puppy somewhere
-			printf("%c", currentChar);
+			if () { // if char printable, print it
+				printf("%c", (char)wE);
+			}
+			wE = 0;
 		}
 	}
 
