@@ -58,10 +58,10 @@ int main(int argc, char *argv[]) {
 		fscanf(encoded, " %d", &imgArray[i]);
 	}
 
-	int wE, power;
+	int wE = 0, power;
 	currentChar = 0;
 	// start reading from encoded thing
-	for(i = 0; i < szX * szY; i++) {
+	for(i = 0; i < 1000; i++) {
 		// Pull 8 lsbs. We want mod 8
 		// ok got the number. Extract the bit from this by checking bit 0 of the number
 		if(imgArray[i] & 1 << 0) {
@@ -76,7 +76,6 @@ int main(int argc, char *argv[]) {
 		if((i % 8) == 7) {
 			// you at the end now, write this puppy somewhere
 			if (wE < 127) { // if char printable, print it [32 to 126]
-				// printf("%c", (char)wE);
 				fprintf(output, "%c", (char)wE);
 			}
 			wE = 0;

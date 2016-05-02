@@ -71,16 +71,13 @@ int main(int argc, char *argv[]) {
 			k++;
 		}
 		else {
-			printf("\nmchar is %c, %d. ", (char)mchar, mchar);
 			// ok got the char, break it down into 8 bits I think
 			for(j = 0; j < 8; j++) {
 				if(mchar & 1 << j) { // if bit j of mchar set, then
-					printf("kf = %d, 1 ", 7 - (k % 8));
 					// set bit 0 of image pixel k
 					imgArray[k] |= 1 << 0;
 				}
 				else {
-					printf("kf = %d, 0 ", 7 - (k % 8));
 					// clear bit 0 of image pixel k
 					imgArray[k] &= ~(1 << 0);
 				}
@@ -100,7 +97,6 @@ int main(int argc, char *argv[]) {
 	fprintf(encoded, "P2\n# result.pgm\n%d %d\n255\n", szX, szY); // pgm header
 	for(i = 0; i < szX * szY; i++) {
 		fprintf(encoded, "%d\n", imgArray[i]);
-		// printf("%d ", imgArray[i]); // DEBUG LINE
 	}
 
 	free(imgArray);
