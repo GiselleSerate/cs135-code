@@ -9,17 +9,18 @@
 
 int main(int argc, char *argv[]) {
 	char filenameH[20];
+	char filenameO[20];
 	FILE *encoded, *output;
 	char ichar, mchar;
 	int szX, szY; // size of image
 	int *imgArray;
 	unsigned char currentChar; // add stuff to this puppy bit by bit
-	int i, j;
+	int i, j, p;
 	int screen = 1; // IN PRACTICE WILL START OUT AS 0 BUT I WANT IT TO PRINT TO SCREEN
 
 	// check command line argument number
-	if(argc != 2) {
-		printf("The proper use of this function is: decode encoded.pgm\n");
+	if(argc != 3) {
+		printf("The proper use of this function is: decode encoded.pgm output.txt\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -29,6 +30,13 @@ int main(int argc, char *argv[]) {
 		printf("Can't open the file %s\nPlease enter an encoded file name: ", argv[1]);
 		scanf("%s", filenameH);
 		encoded = fopen(filenameH, "r");
+	}
+
+	output = fopen("output.txt", "w");
+	while (encoded == NULL) {
+		printf("Can't open the file %s\nPlease enter an output file name: ", argv[2]);
+		scanf("%s", filenameO);
+		output = fopen(filenameO, "w");
 	}
 
 	// start reading image
@@ -41,11 +49,11 @@ int main(int argc, char *argv[]) {
 	// printf("%d %d", szX, szY); // DEBUG LINE
 	do { // get in until \n, aka eat a line
 		ichar = fgetc(encoded);
-		printf("%c", ichar);
+		// printf("%c", ichar);
 	} while(ichar != '\n');
 	do { // get in until \n, aka eat a line
 		ichar = fgetc(encoded);
-		printf("%c", ichar);
+		// printf("%c", ichar);
 	} while(ichar != '\n');
 
 	// Malloc array
@@ -56,34 +64,33 @@ int main(int argc, char *argv[]) {
 		// if(i < 100) printf("%d ", imgArray[i]);
 	}
 
-	output = fopen("output.txt", "w");
-	if(output == NULL) {
-		printf("Can't open an output file. Printing message to screen.\n");
-		screen = 1;
-	}
-
+	int wE, power, q;
 	// start reading from encoded thing
-	int k = 0;
 	for(i = 0; i < szX * szY; i++) {
-		// k = szX - (i % szX);
+		// Pull 8 lsbs. We want mod 8
 		// ok got the number. Extract the bit from this by checking bit 0 of the number
 		if(imgArray[i] & 1 << 0) {
-			// if it's set, make bit szX - (i % width) of currentChar be 1
-			currentChar |= 1 << (i % szX);
-			// printf("1");
-			fprintf(output, "1");
+			// if it's set, make bit i % 8 of currentChar to be 1
+			currentChar |= 1 << (i % 8);
 		}
 		else {
-			// make bit (i % width) of currentChar be 0
-			currentChar &= ~ (1 << (i % szX));
-			// printf("0");
-			fprintf(output, "0");
+			// make bit i % 8 of currentChar be 0
+			currentChar &= ~ (1 << (i % 8));
 		}
-		if(i > 0 && (i % szX) == 0) {
+		if((i % 8) == 7) {
 			// you at the end now, write this puppy somewhere
-			// fprintf(output, "%c", currentChar);
-			printf("%c", currentChar);
-			currentChar = 0;
+			for(p = 0; p < 8; p++) { // it over bits of currentChar forwards
+				wE = 0;
+				if(currentChar & 1 << p) { // the bit is set
+					power = 1;
+					for(q = 0; q < (7-p); q++) { // raises to power 7 - p
+						power *= 2;
+					}
+					wE += power;
+				}
+				// else don't do anything
+			}
+			printf("%c", (char)wE);
 		}
 	}
 
