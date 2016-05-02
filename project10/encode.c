@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
 	char ichar, mchar; // holders for current image or message char
 	int szX, szY; // size of image
 	int i, j; // counters, beautiful counters
+	int testMe;
 
 	// check command line argument number
 	if(argc != 3) {
@@ -55,7 +56,9 @@ int main(int argc, char *argv[]) {
 	// Continue reading in array
 	for(i = 0; i < szX; i++) {
 		for(j = 0; j < szY; j++) {
-			fscanf(image, " %d", &(imgArray[i][j]));
+			fscanf(image, " %d", &testMe);
+			printf("%d ", testMe);
+			// fscanf(image, " %d", &(imgArray[i][j]));
 			// printf("%d ", imgArray[i][j]); // DEBUG LINE
 		}
 		printf("\n"); // DEBUG LINE
