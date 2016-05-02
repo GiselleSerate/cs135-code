@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 	int wE = 0, power;
 	currentChar = 0;
 	// start reading from encoded thing
-	for(i = 0; i < 1000; i++) {
+	for(i = 0; i < szX * szY; i++) {
 		// Pull 8 lsbs. We want mod 8
 		// ok got the number. Extract the bit from this by checking bit 0 of the number
 		if(imgArray[i] & 1 << 0) {
