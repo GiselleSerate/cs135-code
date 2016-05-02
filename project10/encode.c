@@ -59,18 +59,49 @@ int main(int argc, char *argv[]) {
 		fscanf(image, " %d", &imgArray[i]);
 	}
 
-	// start reading message I NEED THAT SIZE
-	do {
+	// start reading message
+	int k = 0; // keeps track of where in the image we at
+	for(i = 0; i < szX * szY; i++) {
 		mchar = fgetc(message);
-	} while(mchar > 0);
+		if(mchar < 0) { // reached eof
+			break;
+		}
+		// ok got the char, break it down into 8 bits I think
+		for(j = 0; j < 8; j++) {
+			if(mchar & 1 << j) { // if bit j of mchar set, then
+				// set bit 0 of image pixel k
+				imgArray[i] |= 1 << k;
+			}
+			else {
+				// clear bit 0 of image pixel k
+				imgArray[i] &= ~(1 << k);
+			}
+			// increment k
+			k++;
+		}
+	}
 
+	// okay now write that sucker
+	encoded = fopen("result.pgm", "w");
+	if(encoded == NULL) {
+		printf("Unable to open a result file.\n");
+		exit(EXIT_FAILURE);
+	}
+	fprintf(encoded, "P2\n# result.pgm\n%d %d\n255\n", szX, szY); // pgm header
+	for(i = 0; i < szX * szY; i++) {
+		fprintf(encoded, "%d ", imgArray[i]);
+		// printf("%d ", imgArray[i]); // DEBUG LINE
+		if(i%szX == szX-1) { // last element in a row
+			fprintf(encoded, "\n");
+			// printf("\n"); // DEBUG LINE
+		}
+	}
 
-
-	// ANY FREEING NEED TO BE DONE? PLEASE DO IT
+	free(imgArray);
 
 	fclose(image);
 	fclose(message);
-	// fclose(encoded); // UNCOMMENT LATER PLS PLS
+	fclose(encoded);
 
 	return 0;
 
