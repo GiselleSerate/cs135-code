@@ -16,7 +16,6 @@ int main(int argc, char *argv[]) {
 	int *imgArray;
 	unsigned char currentChar = 0; // add stuff to this puppy bit by bit
 	int i, j, p;
-	int screen = 1; // IN PRACTICE WILL START OUT AS 0 BUT I WANT IT TO PRINT TO SCREEN
 
 	// check command line argument number
 	if(argc != 3) {
@@ -32,7 +31,7 @@ int main(int argc, char *argv[]) {
 		encoded = fopen(filenameH, "r");
 	}
 
-	output = fopen("output.txt", "w");
+	output = fopen(argv[2], "w");
 	while (encoded == NULL) {
 		printf("Can't open the file %s\nPlease enter an output file name: ", argv[2]);
 		scanf("%s", filenameO);
@@ -46,22 +45,17 @@ int main(int argc, char *argv[]) {
 		} while(ichar != '\n');
 	}
 	fscanf(encoded, "%d %d", &szX, &szY); // get in size
-	// printf("%d %d", szX, szY); // DEBUG LINE
-	do { // get in until \n, aka eat a line
-		ichar = fgetc(encoded);
-		// printf("%c", ichar);
-	} while(ichar != '\n');
-	do { // get in until \n, aka eat a line
-		ichar = fgetc(encoded);
-		// printf("%c", ichar);
-	} while(ichar != '\n');
+	for(i = 0; i < 2; i++) { 
+		do { // get in until \n, aka eat a line
+			ichar = fgetc(encoded);
+		} while(ichar != '\n');
+	}
 
 	// Malloc array
 	imgArray = (int *)malloc(sizeof(int) * (szX * szY)); // this works man
 	// Continue reading in array
 	for(i = 0; i < szX * szY; i++) {
 		fscanf(encoded, " %d", &imgArray[i]);
-		// if(i < 100) printf("%d ", imgArray[i]);
 	}
 
 	int wE, power;
@@ -77,23 +71,22 @@ int main(int argc, char *argv[]) {
 				power *= 2;
 			}
 			wE += power;
-			// printf("1");
 		}
 		// else bit i % 8 of currentChar be 0
-		else {
-			// fprintf(output, "0");
-			// printf("0");
-		}
 		if((i % 8) == 7) {
 			// you at the end now, write this puppy somewhere
-			if () { // if char printable, print it
-				printf("%c", (char)wE);
+			if (wE < 127) { // if char printable, print it [32 to 126]
+				// printf("%c", (char)wE);
+				fprintf(output, "%c", (char)wE);
 			}
 			wE = 0;
 		}
 	}
 
 	// CLEAN UP FAM
+	free(imgArray);
+	fclose(encoded);
+	fclose(output);
 
 	return 0;
 

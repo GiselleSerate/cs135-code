@@ -67,37 +67,40 @@ int main(int argc, char *argv[]) {
 	for(i = 0; i < szX * szY; i++) {
 		mchar = fgetc(message);
 		if(mchar < 0) { // reached eof
-			break;
-		}
-		// ok got the char, break it down into 8 bits I think
-		for(j = 0; j < 8; j++) {
-			if(mchar & 1 << j) { // if bit j of mchar set, then
-				// set bit 0 of image pixel k
-				imgArray[k] |= 1 << 0;
-			}
-			else {
-				// clear bit 0 of image pixel k
-				imgArray[k] &= ~(1 << 0);
-			}
-			// increment k
+			imgArray[k] |= 1 << 0; // just set all those bits bc then decode will catch it. 
 			k++;
 		}
+		else {
+			printf("\nmchar is %c, %d. ", (char)mchar, mchar);
+			// ok got the char, break it down into 8 bits I think
+			for(j = 0; j < 8; j++) {
+				if(mchar & 1 << j) { // if bit j of mchar set, then
+					printf("kf = %d, 1 ", 7 - (k % 8));
+					// set bit 0 of image pixel k
+					imgArray[k] |= 1 << 0;
+				}
+				else {
+					printf("kf = %d, 0 ", 7 - (k % 8));
+					// clear bit 0 of image pixel k
+					imgArray[k] &= ~(1 << 0);
+				}
+				// increment k
+				k++;
+			}
+		}
 	}
-
+	
 	// okay now write that sucker
 	encoded = fopen("result.pgm", "w");
 	if(encoded == NULL) {
 		printf("Unable to open a result file.\n");
 		exit(EXIT_FAILURE);
 	}
+
 	fprintf(encoded, "P2\n# result.pgm\n%d %d\n255\n", szX, szY); // pgm header
 	for(i = 0; i < szX * szY; i++) {
-		// fprintf(encoded, "%d ", imgArray[i]);
-		printf("%d ", imgArray[i]); // DEBUG LINE
-		if(i%szX == szX-1) { // last element in a row
-			// fprintf(encoded, "\n");
-			// printf("\n"); // DEBUG LINE
-		}
+		fprintf(encoded, "%d\n", imgArray[i]);
+		// printf("%d ", imgArray[i]); // DEBUG LINE
 	}
 
 	free(imgArray);
