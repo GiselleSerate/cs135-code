@@ -70,27 +70,17 @@ int main(int argc, char *argv[]) {
 		// Pull 8 lsbs. We want mod 8
 		// ok got the number. Extract the bit from this by checking bit 0 of the number
 		if(imgArray[i] & 1 << 0) {
-			// if it's set, make bit i % 8 of currentChar to be 1
-			currentChar |= 1 << (i % 8);
+			// if it's set, bit i % 8 of currentChar is 1
+			power = 1;
+			for(p = 0; p < (7-(i % 8)); p++) { // raises to power 7 - p
+				power *= 2;
+			}
+			currentChar += power;
 		}
-		else {
-			// make bit i % 8 of currentChar be 0
-			currentChar &= ~ (1 << (i % 8));
-		}
+		// else bit i % 8 of currentChar be 0
 		if((i % 8) == 7) {
 			// you at the end now, write this puppy somewhere
-			for(p = 0; p < 8; p++) { // it over bits of currentChar forwards
-				wE = 0;
-				if(currentChar & 1 << p) { // the bit is set
-					power = 1;
-					for(q = 0; q < (7-p); q++) { // raises to power 7 - p
-						power *= 2;
-					}
-					wE += power;
-				}
-				// else don't do anything
-			}
-			printf("%c", (char)wE);
+			printf("%c", currentChar);
 		}
 	}
 
