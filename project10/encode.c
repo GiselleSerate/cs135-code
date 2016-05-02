@@ -52,6 +52,9 @@ int main(int argc, char *argv[]) {
 	do { // get in until \n, aka eat a line
 		ichar = fgetc(image);
 	} while(ichar != '\n');
+	do { // get in until \n, aka eat a line
+		ichar = fgetc(image);
+	} while(ichar != '\n');
 	// Malloc array
 	imgArray = (int *)malloc(sizeof(int) * (szX * szY));
 	// Continue reading in array
@@ -93,7 +96,7 @@ int main(int argc, char *argv[]) {
 		printf("%d ", imgArray[i]); // DEBUG LINE
 		if(i%szX == szX-1) { // last element in a row
 			// fprintf(encoded, "\n");
-			printf("\n"); // DEBUG LINE
+			// printf("\n"); // DEBUG LINE
 		}
 	}
 

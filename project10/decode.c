@@ -38,14 +38,22 @@ int main(int argc, char *argv[]) {
 		} while(ichar != '\n');
 	}
 	fscanf(encoded, "%d %d", &szX, &szY); // get in size
+	// printf("%d %d", szX, szY); // DEBUG LINE
 	do { // get in until \n, aka eat a line
 		ichar = fgetc(encoded);
+		printf("%c", ichar);
 	} while(ichar != '\n');
+	do { // get in until \n, aka eat a line
+		ichar = fgetc(encoded);
+		printf("%c", ichar);
+	} while(ichar != '\n');
+
 	// Malloc array
-	imgArray = (int *)malloc(sizeof(int) * (szX * szY));
+	imgArray = (int *)malloc(sizeof(int) * (szX * szY)); // this works man
 	// Continue reading in array
 	for(i = 0; i < szX * szY; i++) {
 		fscanf(encoded, " %d", &imgArray[i]);
+		// if(i < 100) printf("%d ", imgArray[i]);
 	}
 
 	output = fopen("output.txt", "w");
@@ -55,35 +63,27 @@ int main(int argc, char *argv[]) {
 	}
 
 	// start reading from encoded thing
-	int k = 0; // keeps track of where in encoded we at
+	int k = 0;
 	for(i = 0; i < szX * szY; i++) {
+		// k = szX - (i % szX);
 		// ok got the number. Extract the bit from this by checking bit 0 of the number
 		if(imgArray[i] & 1 << 0) {
-			// if it's set, make bit (i % width) of currentChar be 1
+			// if it's set, make bit szX - (i % width) of currentChar be 1
 			currentChar |= 1 << (i % szX);
-			// printf("bit 1\n");
+			// printf("1");
+			fprintf(output, "1");
 		}
 		else {
 			// make bit (i % width) of currentChar be 0
 			currentChar &= ~ (1 << (i % szX));
-			// printf("bit 0\n");
+			// printf("0");
+			fprintf(output, "0");
 		}
-		if((i > 0) && ((i % szX) == szX-1)) {
+		if(i > 0 && (i % szX) == 0) {
 			// you at the end now, write this puppy somewhere
-			fprintf(output, "%c", currentChar);
+			// fprintf(output, "%c", currentChar);
 			printf("%c", currentChar);
-		}
-		for(j = 0; j < 8; j++) {
-			if(mchar & 1 << j) { // if bit j of mchar set, then
-				// set bit 0 of image pixel k
-				imgArray[i] |= 1 << k;
-			}
-			else {
-				// clear bit 0 of image pixel k
-				imgArray[i] &= ~(1 << k);
-			}
-			// increment k
-			k++;
+			currentChar = 0;
 		}
 	}
 
