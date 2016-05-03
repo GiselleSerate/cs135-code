@@ -1,18 +1,17 @@
 // Giselle Serate
 // April 28, 2016
-// Project 10 encodes message in image given image file and message file. Looks like they're all pgm files.
+// Project 10 encodes message in image given image file and message file by putting bits of message in least significant bits of the
+// image pixels.
 
 
 #include <stdio.h>
 #include <stdlib.h> // for malloc
 
 
-// function declaring? if you wanna I mean you don't have to
-
-
 int main(int argc, char *argv[]) {
 	char filenameI[20];
 	char filenameM[20];
+	char filenameE[20];
 	FILE *image, *message, *encoded;
 	char ichar, mchar; // holders for current image or message char
 	int szX, szY; // size of image
@@ -21,8 +20,8 @@ int main(int argc, char *argv[]) {
 	int *imgArray;
 
 	// check command line argument number
-	if(argc != 3) {
-		printf("The proper use of this function is: encode image.pgm messagefile.txt\n");
+	if(argc != 4) {
+		printf("The proper use of this function is: encode image.pgm messagefile.txt encoded.pgm\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -40,6 +39,14 @@ int main(int argc, char *argv[]) {
 		printf("Can't open the file %s\nPlease enter a message file name: ", argv[2]);
 		scanf("%s", filenameM);
 		message = fopen(filenameM, "r");
+	}
+
+	// get mah output file
+	encoded = fopen(argv[3], "w");
+	if(encoded == NULL) {
+		printf("Can't open the file %s\nPlease enter an encoded file name: ", argv[3]);
+		scanf("%s", filenameE);
+		encoded = fopen(filenameE, "w");
 	}
 
 	// start reading image
@@ -88,12 +95,6 @@ int main(int argc, char *argv[]) {
 	}
 	
 	// okay now write that sucker
-	encoded = fopen("result.pgm", "w");
-	if(encoded == NULL) {
-		printf("Unable to open a result file.\n");
-		exit(EXIT_FAILURE);
-	}
-
 	fprintf(encoded, "P2\n# result.pgm\n%d %d\n255\n", szX, szY); // pgm header
 	for(i = 0; i < szX * szY; i++) {
 		fprintf(encoded, "%d\n", imgArray[i]);
@@ -108,6 +109,3 @@ int main(int argc, char *argv[]) {
 	return 0;
 
 }
-
-
-// function definitions or whatever

@@ -1,6 +1,6 @@
 // Giselle Serate
 // May 1, 2016
-// Decoding program to get messages from pgm files.
+// Decoding program to get messages hidden in the least significant bits of pgm files.
 
 
 #include <stdio.h>
